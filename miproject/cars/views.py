@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 
+
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
@@ -49,3 +50,13 @@ def checkout(request):
         OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity, unit_price=cart_item.product.price)
     cart.delete()
     return redirect('order_success')
+
+def agregar_producto(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')
+        product = Product.objects.create(name=name, description=description, price=price, image=image,)
+        return redirect('product_list')
+    return render(request, 'agregar_producto.html')

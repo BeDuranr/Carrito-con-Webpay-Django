@@ -21,6 +21,7 @@
                 <div class="navbar-nav">
                     <a class="nav-link" href="/login">Iniciar Sesion</a>
                     <a class="nav-link" href="/signup">Registrarme</a>
+                    <a class="nav-link" href="/agregar">Añadir Producto</a>
                 </div>
             </div>
         </div>
@@ -39,6 +40,9 @@
                         </p>
                         <p class="text-dark">
                             Descripcion: {{product.description}}
+                        </p>
+                        <p>
+                            Imagen: {{product.image}}
                         </p>
                         <a href="{% url 'add_to_cart' product.id %}">Agregar al carrito</a>
                         <a href="/cart">Carrito</a>
