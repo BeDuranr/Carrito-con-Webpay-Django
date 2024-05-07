@@ -5,6 +5,11 @@ from .models import Product, Cart, CartItem, Order, OrderItem
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
+from django.http import HttpResponse
+from django.conf import settings
+from transbank.webpay.webpay_plus import transaction
+
+
 
 
 
@@ -41,15 +46,6 @@ def remove_from_cart(request, cart_item_id):
     cart_item.delete()
     return redirect('view_cart')
 
-def checkout(request):
-    cart = Cart.objects.get(user=request.user)
-    cart_items = cart.cartitem_set.all()
-    total_amount = sum(item.product.price * item.quantity for item in cart_items)
-    order = Order.objects.create(user=request.user, total_amount=total_amount)
-    for cart_item in cart_items:
-        OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity, unit_price=cart_item.product.price)
-    cart.delete()
-    return redirect('order_success')
 
 def agregar_producto(request):
     if request.method == 'POST':
@@ -60,3 +56,15 @@ def agregar_producto(request):
         product = Product.objects.create(name=name, description=description, price=price, image=image,)
         return redirect('product_list')
     return render(request, 'agregar_producto.html')
+
+def checkout(request):
+    cart = Cart.objects.get(user=request.user)
+    cart_items = cart.cartitem_set.all()
+    total_amount = sum(item.product.price * item.quantity for item in cart_items)
+    order = Order.objects.create(user=request.user, total_amount=total_amount)
+    for cart_item in cart_items:
+        OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity, unit_price=cart_item.product.price)
+    response = transaction.Transaction.init_transaction(total_amount,'https://webpay3gint.transbank.cl/' )
+    cart.delete()
+    return HttpResponse('Se ha iniciado la transacción de pago. Consulta la terminal para completar el pago.')
+

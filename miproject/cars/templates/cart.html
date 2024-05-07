@@ -19,6 +19,7 @@
             <p class="card-text">${{cart_item.product.price}}</p>
             <a href="{% url 'remove_from_cart' cart_item.id %}">Remove from Cart</a>
             <a href="{% url 'checkout' %}">Checkout</a>
+
         </div>
     </div>
     {% endfor %}
