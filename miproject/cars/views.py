@@ -6,7 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.http import HttpResponse
-from django.conf import settings
 from transbank.webpay.webpay_plus import transaction
 
 
@@ -24,15 +23,15 @@ def product_list(request):
 
 @login_required
 def add_to_cart(request, product_id):
-    # Obtener el producto
     product = get_object_or_404(Product, pk=product_id)
     # Obtener o crear el carrito para el usuario actual
     cart, created = Cart.objects.get_or_create(user=request.user)
     # Obtener o crear el item del carrito para el producto
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
     # Incrementar la cantidad del producto en el carrito
-    cart_item.quantity += 1
-    cart_item.save()
+    if not created:
+     cart_item.quantity += 1
+     cart_item.save()
     # Redirigir a la lista de productos
     return redirect('product_list')
 
@@ -57,6 +56,7 @@ def agregar_producto(request):
         return redirect('product_list')
     return render(request, 'agregar_producto.html')
 
+
 def checkout(request):
     cart = Cart.objects.get(user=request.user)
     cart_items = cart.cartitem_set.all()
@@ -64,7 +64,8 @@ def checkout(request):
     order = Order.objects.create(user=request.user, total_amount=total_amount)
     for cart_item in cart_items:
         OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity, unit_price=cart_item.product.price)
-    response = transaction.Transaction.init_transaction(total_amount,'https://webpay3gint.transbank.cl/' )
-    cart.delete()
-    return HttpResponse('Se ha iniciado la transacción de pago. Consulta la terminal para completar el pago.')
+    """ response = transaction.TransactionCreateRequest(1, 1, total_amount, 'https://webpay3gint.transbank.cl/') """
+    response=transaction.TransactionCreateRequest(buy_order='1',session_id='user',amount=total_amount, return_url='https://webpay3gint.transbank.cl/')
+    return redirect('https://webpay3gint.transbank.cl/')
+
 
