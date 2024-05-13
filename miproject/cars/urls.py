@@ -1,4 +1,7 @@
+from itertools import product
+from django.conf import settings
 from django.urls import path
+from django.conf.urls.static import static
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import SignUpView
@@ -12,4 +15,4 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'),name='login'),
     path('signup/', SignUpView.as_view(), name='signup'),
     path('agregar/', views.agregar_producto, name='agregar_producto'),
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
