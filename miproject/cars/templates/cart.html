@@ -10,19 +10,37 @@
 </head>
 
 <body>
-    <h1>Carrito</h1>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/product_list">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/login">Iniciar Sesion</a>
+                    <a class="nav-link" href="/signup">Registrarme</a>
+                    <a class="nav-link" href="/agregar">Añadir Producto</a>
+                    <a class="nav-link" href="/cart">Carrito</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+<div class="container mt-5">
     {% for cart_item in cart_items %}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">{{cart_item.product.name}}</h5>
             <h6>Cantidad: {{cart_item.quantity}}</h6>
             <p class="card-text">${{cart_item.product.price}}</p>
-            <a href="{% url 'remove_from_cart' cart_item.id %}">Remove from Cart</a>
-            <a href="{% url 'checkout' %}">Checkout</a>
-
+            <a href="{% url 'remove_from_cart' cart_item.id %}" class="btn btn-primary">Remove from Cart</a>
+            <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
         </div>
     </div>
     {% endfor %}
+</div>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

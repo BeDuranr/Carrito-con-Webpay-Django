@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="">Productos</a>
+            <a class="navbar-brand" href="/product_list">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -22,36 +22,32 @@
                     <a class="nav-link" href="/login">Iniciar Sesion</a>
                     <a class="nav-link" href="/signup">Registrarme</a>
                     <a class="nav-link" href="/agregar">Añadir Producto</a>
+                    <a class="nav-link" href="/cart">Carrito</a>
                 </div>
             </div>
         </div>
     </nav>
+
+
     <div class="container">
-        <div class="row">
+        <div class="row mt-5">
             {% for product in products %}
             <div class="col">
                 <ul>
                     
-                    <li>
-                        <p class="text-dark">
-                            {{ product.name }}
-                        </p>
-                        <p class="text-dark">
-                            ${{ product.price }}
-                        </p>
-                        <p class="text-dark">
-                            Descripcion: {{product.description}}
-                        </p>
-                        <p>
-                            {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="" width="100" height="100">
+                    <div class="card" style="width: 18rem;" height="300px">
+                        {% if product.image %}
+                        <img src="{{product.image.url}}" class="card-img-top" alt="..." height="250px">
                         {% else %}
-                            <p>No hay imagen disponible para este producto.</p>
-                        {% endif %}
-                        </p>
-                        <a href="{% url 'add_to_cart' product.id %}">Agregar al carrito</a>
-                        <a href="/cart">Carrito</a>
-                    </li>
+                            <p>Imagen no disponible en estos momentos</p>
+                        {% endif %}    
+                        <div class="card-body">
+                          <h5 class="card-title">{{ product.name }}</h5>
+                          <p class="card-text">{{product.description}}</p>
+                          <a href="{%url 'add_to_cart' product.id%}" class="btn btn-primary">Agregar al carrito</a>
+                          <a href="/cart" class="btn btn-secondary">Mi carrito</a>
+                        </div>
+                      </div>
                     
                 </ul>
             </div>
