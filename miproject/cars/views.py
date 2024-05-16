@@ -26,15 +26,11 @@ def product_list(request):
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-    # Obtener o crear el carrito para el usuario actual
     cart, created = Cart.objects.get_or_create(user=request.user)
-    # Obtener o crear el item del carrito para el producto
     cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    # Incrementar la cantidad del producto en el carrito
     if not created:
      cart_item.quantity += 1
      cart_item.save()
-    # Redirigir a la lista de productos
     return redirect('product_list')
 
 def view_cart(request):
