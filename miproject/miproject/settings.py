@@ -121,17 +121,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-TRANSBANK_COMMERCE_CODE = 597055555532
+TRANSBANK_INTEGRATION_TYPE = "TEST"
+TRANSBANK_COMMERCE_CODE = 597055555532 
 TRANSBANK_INTEGRATION_KEY = "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C"
+
+OPENWEATHERMAP_API_KEY = '4c5c539868a09c108be62b0741b26ca5'
+
 
 # settings.py
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+
